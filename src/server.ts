@@ -1,6 +1,18 @@
 import fastify from "fastify";
 
-const app = fastify();
+const app = fastify({
+  logger: {
+    level: process.env.LOG_LEVEL || "debug",
+    // TODO: add transport only in production environment
+    transport: {
+      target: "pino-pretty",
+      options: {
+        colorize: true,
+        translateTime: "SYS:standard",
+      },
+    },
+  },
+});
 
 // GET endpoint added for testing purposes
 app.get("/ping", async (_request, _reply) => {
